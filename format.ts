@@ -17,20 +17,17 @@ interface ParsedElement {
 }
 
 $(() => {
-
-    var outputGithub = window.localStorage.getItem('outputGithub');
-    $('#input').val(window.localStorage.getItem('inputText'));
+    var outputGithub = window.localStorage.getItem('outputGithub') || '';
+    $('#input').val(window.localStorage.getItem('inputText') || '');
     $('#outputGithub').val(outputGithub);
     $('#outputMsdn').val(makeReplacements(outputGithub));
 
     var timer: number = undefined;
     $('#input').bind('input propertychange', () => {
-        console.log('changed');
         if (timer !== undefined) {
             window.clearTimeout(timer);
         }
         timer = window.setTimeout(() => {
-            console.log('timeout');
             timer = undefined;
             window.localStorage.setItem('inputText', $('#input').val());
             render();
@@ -62,7 +59,6 @@ function makeReplacements(input: string) {
         // String red: 901319
 
         // A mapping of github code names to colors
-
         var colors: any = {};
         colors['pl-st'] = colors['pl-k'] = '#0603D8'; // Keywords (blue)
         colors['pl-en'] = 'black'; // Identifiers (black)
@@ -107,23 +103,10 @@ function makeReplacements(input: string) {
         }
     }
 
-    // return JSON.stringify(data);
     return data.map(n => render(n)).join('');
 }
 
-function callback(data) {
-    console.log('callback');
-    console.log(data);
-}
-
-// Map div class='highlight' to nothing
-
-
-
 function render() {
-    $('#output').val((Math.random() * 100).toString());
-
-
     $.ajax({
         url: 'https://api.github.com/markdown',
         jsonp: 'callback',
