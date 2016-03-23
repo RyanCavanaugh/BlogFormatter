@@ -41,7 +41,9 @@ $(() => {
 function makeReplacements(input: string) {
     var builder = new Tautologistics.NodeHtmlParser.HtmlBuilder();
     var parser = new Tautologistics.NodeHtmlParser.Parser(builder);
-    parser.parseChunk(input);
+    if (input) {
+        parser.parseChunk(input);    
+    }
 
     var data = <ParsedElement[]>builder.dom;
 
